@@ -4,164 +4,147 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Thronics — مكتبة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#07080b;
-      --card:#0f1720;
-      --muted:#9aa3b7;
-      --accent:#2ef7b7;
-      --accent-2:#6be4ff;
-      --danger:#ff6b6b;
+      --bg-1: #05040a;
+      --bg-2: #0b0710;
+      --card: rgba(255,255,255,0.03);
+      --muted: #a6b0c4;
+      --accent-1: #8b5cf6; /* purple */
+      --accent-2: #4dd6d6; /* teal */
+      --glow: rgba(139,92,246,0.18);
       --glass: rgba(255,255,255,0.03);
+      --danger: #ff6b6b;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Poppins, Montserrat, sans-serif;background:
-      radial-gradient(1200px 400px at 10% 10%, rgba(107,228,255,0.02), transparent 10%),
-      linear-gradient(180deg,#050608 0%, #0b0f14 100%);color:#eaf0ff}
-    body{direction:rtl}
-    .container{max-width:1200px;margin:30px auto;padding:20px}
+    html,body{height:100%;margin:0;font-family:Cairo, Montserrat, sans-serif;background:
+      radial-gradient(800px 300px at 10% 10%, rgba(77,214,214,0.03), transparent 10%),
+      linear-gradient(180deg,var(--bg-1), var(--bg-2));color:#ecf3ff; -webkit-font-smoothing:antialiased;}
+    body{direction:rtl;-webkit-tap-highlight-color:transparent}
+    .wrap{max-width:1200px;margin:28px auto;padding:20px}
 
-    /* Header */
-    header{display:flex;align-items:center;gap:16px}
-    .logo{font-weight:800;font-size:22px;letter-spacing:0.6px;color:var(--accent);
-      text-shadow:0 10px 40px rgba(46,247,183,0.06),0 0 18px rgba(107,228,255,0.03)}
-    .subtitle{color:var(--muted);font-size:14px}
+    /* header */
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{font-weight:900;font-size:26px;color:var(--accent-1);text-shadow:0 8px 30px var(--glow)}
+    .subtitle{color:var(--muted);font-size:14px;margin-right:auto}
 
-    /* Welcome overlay (big, fancy animation) */
-    .welcome{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(180deg, rgba(2,6,23,0.8), rgba(2,6,23,0.95));z-index:1000;pointer-events:auto}
-    .welcome-card{
-      width:94%;max-width:980px;border-radius:20px;padding:28px;border:1px solid rgba(255,255,255,0.04);
-      background:linear-gradient(135deg, rgba(46,247,183,0.02), rgba(107,228,255,0.02));
-      box-shadow: 0 30px 120px rgba(46,247,183,0.03), inset 0 -6px 40px rgba(0,0,0,0.6);
-      transform:translateY(20px) scale(.98);opacity:0;backdrop-filter: blur(6px);
-      animation:welcomeIn .9s cubic-bezier(.2,.9,.2,1) forwards;
-      overflow:hidden;position:relative;
-    }
-    @keyframes welcomeIn { from{ opacity:0; transform:translateY(40px) scale(.98) } to{ opacity:1; transform:none } }
-    .welcome-graphic{position:absolute;inset:-20% -10% auto auto;width:60%;height:200px;background:
-      radial-gradient(circle at 20% 30%, rgba(46,247,183,0.06), transparent 6%),
-      radial-gradient(circle at 80% 80%, rgba(107,228,255,0.05), transparent 8%);transform:rotate(8deg);opacity:.9}
-    .welcome h1{margin:0;font-size:36px;color:var(--accent);font-weight:900;letter-spacing:0.6px}
-    .welcome p{color:var(--accent-2);margin:12px 0 18px;font-weight:600}
-    .welcome .controls{display:flex;gap:12px;align-items:center}
-    .btn-enter{
-      padding:12px 22px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      border:none;color:#001;cursor:pointer;font-weight:800;box-shadow:0 12px 40px rgba(46,247,183,.06)
-    }
-    .btn-ghost{padding:10px 18px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.04);
-      color:var(--accent);cursor:pointer;font-weight:700}
+    /* big hero / welcome (kept minimal: we auto-show main but elements have reveal on scroll) */
+    .hero{padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(139,92,246,0.03), rgba(77,214,214,0.02));border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 80px rgba(11,7,16,0.6);overflow:hidden}
+    .hero h1{margin:0;font-size:30px;color:var(--accent-1);letter-spacing:0.6px}
+    .hero p{color:var(--muted);margin-top:8px;font-size:15px}
 
-    /* Fade-out animation when hiding welcome */
-    .welcome-hide { animation: welcomeOut .8s cubic-bezier(.2,.9,.2,1) forwards; pointer-events:none }
-    @keyframes welcomeOut { to { opacity:0; transform:translateY(-30px) scale(.98); filter: blur(2px) } }
-
-    /* reveal helpers */
-    .hidden {opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease}
-    .show {opacity:1;transform:translateY(0)}
-
-    /* instruction cards */
-    .instructions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:28px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
-      padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);min-height:120px;position:relative;overflow:hidden}
+    /* reveal animation helpers */
+    .reveal{opacity:0;transform:translateY(18px) scale(.995);transition: all 700ms cubic-bezier(.2,.9,.2,1)}
+    .reveal.visible{opacity:1;transform:none}
+    .stagger > *{opacity:0;transform:translateY(18px) scale(.995)}
+    .stagger.visible > *{opacity:1;transform:none}
+    .stagger > *{transition: all 620ms cubic-bezier(.2,.9,.2,1)}
+    
+    /* instructions grid */
+    .instructions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;border:1px solid var(--card);position:relative;overflow:hidden;min-height:110px}
     .card h3{margin:0 0 8px;font-size:16px}
     .card p{margin:0;color:var(--muted);font-size:13px}
-    .card .accent-dot{position:absolute;left:12px;top:12px;width:10px;height:10px;border-radius:50%;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(46,247,183,0.06)}
+    .card .spark{position:absolute;left:-8px;top:-20px;width:200px;height:220px;background:radial-gradient(circle at 20% 20%, rgba(77,214,214,0.06), transparent 8%), radial-gradient(circle at 80% 80%, rgba(139,92,246,0.04), transparent 10%);transform:rotate(18deg);opacity:.9}
 
-    /* comparison table (force LTR inside to keep columns order correct) */
-    .compare{margin-top:30px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
-    .compare .compare-grid{direction:ltr;display:grid;grid-template-columns:240px 1fr 1fr;gap:0}
-    .compare-header{display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));font-weight:800}
-    .row{display:flex;align-items:center;padding:18px;border-top:1px solid rgba(255,255,255,0.02)}
-    .criteria{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));font-weight:700}
-    .check{display:inline-flex;align-items:center;justify-content:center;width:44px;height:32px;border-radius:8px;background:rgba(46,247,183,0.08);color:var(--accent);font-weight:700}
+    /* comparison table */
+    .compare{margin-top:22px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+    .compare-grid{direction:ltr;display:grid;grid-template-columns:220px 1fr 1fr}
+    .compare-header{padding:16px;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));font-weight:800;text-align:center}
+    .row{display:flex;align-items:center;padding:14px;border-top:1px solid rgba(255,255,255,0.02)}
+    .criteria{background:linear-gradient(180deg, rgba(255,255,255,0.006), rgba(255,255,255,0.003));font-weight:700}
+    .check{display:inline-flex;align-items:center;justify-content:center;width:44px;height:34px;border-radius:8px;background:rgba(77,214,214,0.06);color:var(--accent-2);font-weight:800}
     .bad{background:rgba(255,107,107,0.06);color:var(--danger)}
-    .detail-strong{color:var(--accent-2);font-weight:700}
 
-    /* mini-grid */
-    .mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:14px}
-    .mini{height:70px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
-      display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);box-shadow:0 10px 30px rgba(2,6,23,0.6);
-      transform:translateY(12px);opacity:0}
-    .mini.show{animation:miniIn .6s forwards}
-    @keyframes miniIn{to{transform:none;opacity:1}}
+    /* mini grids */
+    .mini-wrap{display:flex;gap:12px;padding:14px;direction:ltr}
+    .mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+    .mini{height:72px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);box-shadow:0 12px 36px rgba(2,6,23,0.6);opacity:0;transform:translateY(18px)}
 
-    /* map selector */
-    .maps{margin-top:24px;display:flex;gap:16px;align-items:start;flex-wrap:wrap}
-    .maps .panel{flex:1;background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .map-toggle{display:flex;align-items:center;gap:10px;cursor:pointer}
-    .plus{width:46px;height:46px;border-radius:10px;background:linear-gradient(90deg, rgba(46,247,183,0.06), rgba(107,228,255,0.06));display:flex;align-items:center;justify-content:center;font-weight:900}
-    .map-list{margin-top:12px;max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.9,.2,1), opacity .3s;opacity:0}
-    .map-list.show{max-height:320px;opacity:1}
-    .map-item{padding:10px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);cursor:pointer}
+    /* maps area (single button) */
+    .maps{display:flex;gap:14px;margin-top:20px;flex-wrap:wrap}
+    .panel{flex:1;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .map-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+    .btn-map{width:56px;height:56px;border-radius:12px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 14px 40px rgba(139,92,246,0.08);color:#0b0710}
+    .map-list{margin-top:12px;max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.2,.9,.2,1), opacity .4s;opacity:0}
+    .map-list.show{max-height:360px;opacity:1}
+    .map-item{padding:10px;border-radius:10px;margin-bottom:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
 
-    /* encryption UI */
-    .enc{margin-top:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)}
-    .code-area{background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(255,255,255,0.02));padding:14px;border-radius:12px;position:relative;min-height:80px;font-family:monospace;color:#dffcf0;direction:ltr;text-align:left}
-    .copy-btn{position:absolute;top:12px;left:12px;background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:10px;cursor:pointer}
-    .copy-icon{display:inline-block;vertical-align:middle}
+    /* encryption UI (styled like code box image) */
+    .enc{margin-top:26px;border-radius:14px;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .code-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .code-label{display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:12px;font-weight:700;color:var(--muted);box-shadow:inset 0 -6px 18px rgba(0,0,0,0.4)}
+    .code-label .lang{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));padding:6px 10px;border-radius:8px;color:#061018;font-weight:900}
+    .code-area{position:relative;background:linear-gradient(180deg, rgba(0,0,0,0.26), rgba(255,255,255,0.01));padding:14px;border-radius:12px;color:#dffcf0;font-family:monospace;direction:ltr;text-align:left;min-height:88px;border:1px solid rgba(255,255,255,0.02)}
+    .copy-btn{position:absolute;top:8px;right:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:10px;cursor:pointer;color:var(--muted);}
+    .copy-btn .ico{font-weight:800}
+    .code-badge{position:absolute;left:12px;top:12px;background:rgba(255,255,255,0.02);padding:6px 8px;border-radius:8px;color:var(--muted);font-weight:700}
+
+    /* stats */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+    .stat{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));text-align:center}
+    .stat h4{margin:0;font-size:13px;color:var(--muted)}
+    .stat .num{font-size:28px;font-weight:900;color:var(--accent-1);margin-top:8px}
 
     /* toast */
-    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#002;border-radius:12px;padding:10px 16px;font-weight:800;box-shadow:0 10px 40px rgba(46,247,183,0.08);opacity:0;pointer-events:none;transition:opacity .25s}
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#051018;padding:10px 16px;border-radius:12px;font-weight:800;box-shadow:0 18px 60px rgba(139,92,246,0.08);opacity:0;pointer-events:none;transition:opacity .24s}
     .toast.show{opacity:1}
 
-    /* big stat cards */
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
-    .stat{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));text-align:center}
-    .stat h4{margin:0;font-size:13px;color:var(--muted)}
-    .stat .num{font-size:28px;font-weight:900;color:var(--accent);margin-top:8px}
-
-    /* small responsive tweaks */
+    /* responsive */
     @media (max-width:900px){
-      .compare .compare-grid{grid-template-columns:180px 1fr}
-      .compare .compare-grid > :nth-child(3){display:none}
+      .compare-grid{grid-template-columns:160px 1fr}
       .mini-grid{grid-template-columns:repeat(4,1fr)}
-      .maps{flex-direction:column}
-      .welcome h1{font-size:28px}
+      .stats{grid-template-columns:1fr}
+      .hero h1{font-size:22px}
+      .btn-map{width:48px;height:48px}
+      .map-list.show{max-height:320px}
     }
   </style>
 </head>
 <body>
-  <!-- Welcome (appears automatically, then hides) -->
-  <div class="welcome" id="welcome" role="dialog" aria-label="ترحيب Thronics">
-    <div class="welcome-card" id="welcomeCard">
-      <div class="welcome-graphic" aria-hidden="true"></div>
-      <h1>Thronics — مكتبة</h1>
-      <p>البرنامج النصي الشامل لأكثر من 125 لعبة — مرحباً بك! الموقع يفتح تلقائياً بعد الانميشين.</p>
-      <div class="controls" style="margin-top:8px">
-        <button class="btn-enter" id="enterBtn" title="عرض المحتوى الآن">عرض الآن</button>
-        <button class="btn-ghost" id="closeWelcome">إخفاء الترحيب</button>
-      </div>
-      <div style="margin-top:14px;color:var(--muted);font-size:13px">
-        انميشين دخول فاخر — ستختفي هذه النافذة تلقائياً بعد العرض.
-      </div>
-    </div>
-  </div>
-
-  <!-- Main container (مخفية أولاً حتى يظهر بعد الانيميشن) -->
-  <div class="container hidden" id="main" aria-live="polite">
-    <header>
+  <div class="wrap">
+    <header class="reveal">
       <div class="logo">Thronics</div>
-      <div style="flex:1"></div>
-      <div class="subtitle">مكتبة / واجهة متقدمة فخمة مع تأثيرات وأنميشين</div>
+      <div class="subtitle">مكتبة سكربتات متطوّرة — تصميم فاخر وأنميشين</div>
     </header>
 
-    <!-- instruction cards -->
-    <section class="instructions" aria-label="تعليمات">
-      <div class="card" id="card1"><div class="accent-dot"></div><h3>تعليمات التثبيت</h3><p>تحميل → استخراج → تركيب. اتبع نسخة README الداخلية لكل لعبة.</p></div>
-      <div class="card" id="card2"><div class="accent-dot"></div><h3>نظام التشفير</h3><p>سكربتات محمية بواجهة تشفير افتراضية لعرض آمن.</p></div>
-      <div class="card" id="card3"><div class="accent-dot"></div><h3>نصائح الأداء</h3><p>خفف الرسومات إن احتجت لرفع FPS، واستخدم النسخة المُحسّنة.</p></div>
-      <div class="card" id="card4"><div class="accent-dot"></div><h3>الدعم</h3><p>ديسكورد نشط 24/7 — انضم لطلب المساعدة والتحديثات.</p></div>
+    <!-- hero -->
+    <section class="hero reveal" id="hero">
+      <h1>البرنامج النصي الشامل لأكثر من 125 لعبة</h1>
+      <p>واجهة أنيقة وفخمة — العناصر ستظهر عند النزول إلى الشاشة بأنميشين ناعم ومرتب.</p>
     </section>
 
-    <!-- comparison table -->
-    <section class="compare" aria-label="مقارنة">
-      <div class="compare-grid" role="table" aria-label="مقارنة Thronics مع سكربتات أخرى">
+    <!-- instructions: 4 boxes -->
+    <section class="instructions stagger reveal" id="instructions">
+      <div class="card">
+        <div class="spark" aria-hidden="true"></div>
+        <h3>تعليمات التثبيت</h3>
+        <p>تحميل → استخراج → تركيب. اقرأ README داخل الحزمة لكل لعبة.</p>
+      </div>
+      <div class="card">
+        <div class="spark" aria-hidden="true"></div>
+        <h3>نظام التشفير</h3>
+        <p>واجهة تشفير أنيقة تحمي الكود وتوفر نسخ آمن.</p>
+      </div>
+      <div class="card">
+        <div class="spark" aria-hidden="true"></div>
+        <h3>نصائح الأداء</h3>
+        <p>اضبط الإعدادات واغلق الميزات الغير ضرورية لزيادة FPS.</p>
+      </div>
+      <div class="card">
+        <div class="spark" aria-hidden="true"></div>
+        <h3>الدعم</h3>
+        <p>ديسكورد نشط 24/7 لدعم وطلب تحديثات.</p>
+      </div>
+    </section>
+
+    <!-- comparison -->
+    <section class="compare reveal" id="compare">
+      <div class="compare-grid" role="table" aria-label="مقارنة">
         <div class="compare-header">Criteria</div>
         <div class="compare-header">Thronics</div>
-        <div class="compare-header">Other Scripts</div>
+        <div class="compare-header">Other</div>
 
         <div class="row criteria">Performance / FPS impact</div>
         <div class="row"><div class="check">✔</div></div>
@@ -176,36 +159,36 @@
         <div class="row"><div class="check bad">✖</div></div>
 
         <div class="row criteria">Detection rate</div>
-        <div class="row"><div class="check">✔<div style="font-size:12px;margin-right:8px;color:var(--accent-2)">(ultra-low)</div></div></div>
-        <div class="row"><div class="check bad">✖<div style="font-size:12px;margin-right:8px;color:var(--danger)">(high)</div></div></div>
+        <div class="row"><div class="check">✔ <span style="margin-left:8px;color:var(--muted);font-size:12px">(ultra-low)</span></div></div>
+        <div class="row"><div class="check bad">✖ <span style="margin-left:8px;color:var(--danger);font-size:12px">(high)</span></div></div>
 
         <div class="row criteria">Completely Free</div>
         <div class="row"><div class="check">✔</div></div>
-        <div class="row"><div class="check bad">✖<div style="font-size:12px;margin-right:8px;color:var(--danger)">(pay-wall)</div></div></div>
+        <div class="row"><div class="check bad">✖</div></div>
 
         <div class="row criteria">Active Discord 24/7</div>
         <div class="row"><div class="check">✔</div></div>
         <div class="row"><div class="check bad">✖</div></div>
       </div>
 
-      <!-- mini boxes under each column (7 each) -->
-      <div style="display:flex;gap:12px;padding:14px;direction:ltr">
-        <div style="flex:1;background:transparent;padding:8px;border-radius:10px">
-          <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Criteria</div>
+      <!-- 3 columns of 7 mini boxes -->
+      <div class="mini-wrap reveal" id="minisWrap">
+        <div style="flex:1">
+          <div style="color:var(--muted);font-weight:800;margin-bottom:8px">المعايير</div>
           <div class="mini-grid" id="minis1">
             <div class="mini">1</div><div class="mini">2</div><div class="mini">3</div>
             <div class="mini">4</div><div class="mini">5</div><div class="mini">6</div><div class="mini">7</div>
           </div>
         </div>
-        <div style="flex:1;padding:8px;border-radius:10px">
-          <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Thronics</div>
+        <div style="flex:1">
+          <div style="color:var(--muted);font-weight:800;margin-bottom:8px">Thronics</div>
           <div class="mini-grid" id="minis2">
             <div class="mini">صورة</div><div class="mini">صورة</div><div class="mini">صورة</div>
             <div class="mini">صورة</div><div class="mini">صورة</div><div class="mini">صورة</div><div class="mini">صورة</div>
           </div>
         </div>
-        <div style="flex:1;padding:8px;border-radius:10px">
-          <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Other Scripts</div>
+        <div style="flex:1">
+          <div style="color:var(--muted);font-weight:800;margin-bottom:8px">Other</div>
           <div class="mini-grid" id="minis3">
             <div class="mini">X</div><div class="mini">X</div><div class="mini">X</div>
             <div class="mini">X</div><div class="mini">X</div><div class="mini">X</div><div class="mini">X</div>
@@ -214,63 +197,53 @@
       </div>
     </section>
 
-    <!-- Maps area (with + toggle showing fancy animated list) -->
-    <section class="maps" aria-label="المابات">
+    <!-- maps: single button -->
+    <section class="maps reveal" id="maps">
       <div class="panel">
         <div class="map-toggle" id="mapToggle" role="button" aria-expanded="false" aria-controls="mapList">
-          <div class="plus" id="plusSign">+</div>
+          <div class="btn-map" id="mapBtn">+</div>
           <div style="flex:1">
             <div style="font-weight:800">المابات المتاحة</div>
-            <div style="color:var(--muted);font-size:13px">اضغط + لعرض المابات</div>
+            <div style="color:var(--muted);font-size:13px">اضغط الزر لفتح قائمة المابات (زر واحد فقط)</div>
           </div>
         </div>
-        <div class="map-list" id="mapList" aria-hidden="true">
-          <div class="map-item">Map_Desert</div>
-          <div class="map-item">Map_Forest</div>
-          <div class="map-item">Map_Urban</div>
-          <div class="map-item">Map_Sky</div>
-          <div class="map-item">Map_Arena</div>
-        </div>
-      </div>
-
-      <div class="panel" style="flex:1.2">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font-weight:800">قائمة المابات للاختيار</div>
-          <div style="display:flex;gap:10px;align-items:center">
-            <div style="color:var(--muted);font-size:13px">اختر ماب لتطبيق السكربت</div>
-            <button class="plus" id="showMapBtn" aria-controls="mapPanelList" aria-expanded="false">+</button>
-          </div>
-        </div>
-        <div style="margin-top:12px;color:var(--muted)">اضغط + لإظهار/إخفاء القائمة مع أنميشين فخم.</div>
-        <div id="mapPanelList" class="map-list" style="margin-top:12px" aria-hidden="true"></div>
+        <div class="map-list" id="mapList" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- Encryption UI and stats -->
-    <section class="enc" aria-label="واجهة التشفير">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="font-weight:800">واجهة التشفير — Thronics Script</div>
-        <div style="color:var(--muted);font-size:13px">نسخة محمية — انقر نسخ لنسخ السكربت</div>
-      </div>
-
-      <div class="code-area" id="codeArea" role="region" aria-label="الكود">
-        <button class="copy-btn" id="copyBtn" title="نسخ السكربت">
-          <span class="copy-icon" id="copyIcon">📋</span>
-        </button>
-        <!-- نص السكربت (يمكنك تغييره إلى السكربت الحقيقي) -->
-        <div id="scriptText" aria-hidden="false">
--- Thronics | Encrypted Script
--- مثال عرضي فقط
-local key = "THR0N1CS-ENCRYPTED-EXAMPLE"
-print("تحميل...")
--- انسخ الزر لنسخ النص الكامل
+    <!-- encryption UI -->
+    <section class="enc reveal" id="encryption">
+      <div class="code-header">
+        <div class="code-label">
+          <span class="lang">lua</span>
+          <span style="opacity:.85">نسخة مشفرة</span>
         </div>
+        <div style="color:var(--muted);font-size:13px">انقر على أيقونة النسخ لنسخ السكربت — سيزيد عد المستخدمين</div>
       </div>
 
-      <div class="stats" style="margin-top:16px" aria-hidden="false">
-        <div class="stat"><h4>المطورون</h4><div class="num" id="devsNum">0</div></div>
-        <div class="stat"><h4>عدد المستخدمين</h4><div class="num" id="usersNum">0</div></div>
-        <div class="stat"><h4>المنفذون</h4><div class="num" id="execNum">0</div></div>
+      <div class="code-area" id="codeArea" role="region" aria-label="كود السكربت">
+        <div class="code-badge">lua</div>
+        <button class="copy-btn" id="copyBtn" title="نسخ السكربت" aria-label="نسخ السكربت"><span class="ico" id="copyIcon">📋</span></button>
+        <pre id="scriptText" style="margin:0;white-space:pre-wrap;font-size:13px;line-height:1.5;">
+-- Thronics | Encrypted Script
+-- مثال تجريبي لعرض واجهة التشفير
+local key = "THR0N1CS-ENCRYPTED-EXAMPLE"
+print("تحميل...")</pre>
+      </div>
+
+      <div class="stats" style="margin-top:14px">
+        <div class="stat">
+          <h4>المطورون</h4>
+          <div class="num" id="devsNum">0</div>
+        </div>
+        <div class="stat">
+          <h4>عدد المستخدمين</h4>
+          <div class="num" id="usersNum">0</div>
+        </div>
+        <div class="stat">
+          <h4>المنفذون</h4>
+          <div class="num" id="execNum">0</div>
+        </div>
       </div>
     </section>
 
@@ -279,238 +252,158 @@ print("تحميل...")
   <div class="toast" id="toast" role="status" aria-live="polite">تم النسخ ✔</div>
 
   <script>
-    /* =========================
-       Utilities (robust & safe)
-       ========================= */
+    /* Utilities */
     function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-
-    // عرض العدد بنمط ذكي (k/m)
-    function formatNumberSmart(n){
+    function formatSmart(n){
       n = Math.floor(n);
       if(n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'') + 'm';
       if(n >= 1000) return Math.round(n/1000) + 'k';
       return String(n);
     }
-
-    // animation counter (smooth)
-    function animateValue(id, start, end, duration=1000){
-      const el = document.getElementById(id);
+    function animateCount(el, start, end, duration=900){
       if(!el) return;
       let startTime = null;
-      const step = (timestamp) => {
-        if(!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
+      function step(ts){
+        if(!startTime) startTime = ts;
+        const progress = Math.min((ts - startTime)/duration, 1);
         const eased = easeOutCubic(progress);
         const value = Math.floor(start + (end - start) * eased);
-        el.textContent = formatNumberSmart(value);
+        el.textContent = formatSmart(value);
         if(progress < 1) requestAnimationFrame(step);
-        else el.textContent = formatNumberSmart(end);
-      };
+        else el.textContent = formatSmart(end);
+      }
       requestAnimationFrame(step);
     }
 
-    // resilient copy (Clipboard API + fallback)
     async function safeCopy(text){
       if(navigator.clipboard && navigator.clipboard.writeText){
-        try { await navigator.clipboard.writeText(text); return true; }
-        catch(e){ /* continue to fallback */ }
+        try{ await navigator.clipboard.writeText(text); return true; } catch(e){/*pass*/}
       }
-      try {
+      try{
         const ta = document.createElement('textarea');
         ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
+        ta.style.position='fixed'; ta.style.left='-9999px';
         document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, ta.value.length);
+        ta.select(); ta.setSelectionRange(0, ta.value.length);
         document.execCommand('copy');
         ta.remove();
         return true;
-      } catch(e) { return false; }
+      } catch(e){ return false; }
     }
 
     function showToast(msg='تم'){
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(()=>toast.classList.remove('show'), 1600);
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(()=> t.classList.remove('show'), 1500);
     }
 
-    /* =========================
-       Page behavior & logic
-       ========================= */
-    const welcome = document.getElementById('welcome');
-    const welcomeCard = document.getElementById('welcomeCard');
-    const main = document.getElementById('main');
-    const enterBtn = document.getElementById('enterBtn');
-    const closeWelcome = document.getElementById('closeWelcome');
-
-    // revealMain(): يختفي الترحيب ويظهر المحتوى الرئيسي مع أنيميشن
-    function revealMain(){
-      if(!welcome) return;
-      // hide overlay with animation
-      welcome.classList.add('welcome-hide');
-      // give time للأنيميشن ثم إخفاء DOM واظهار المحتوى
-      setTimeout(()=>{
-        welcome.style.display = 'none';
-        main.classList.remove('hidden');
-        setTimeout(()=> main.classList.add('show'), 30);
-
-        // show mini boxes staggered
-        document.querySelectorAll('.mini').forEach((el, i)=>{
-          setTimeout(()=> el.classList.add('show'), 120 + i*80);
-        });
-
-        // animate stats
-        animateValue('devsNum', 0, 4, 900);
-        animateValue('execNum', 0, 6000, 1400);
-        const usersStored = Number(localStorage.getItem('th_users') || 2345);
-        animateValue('usersNum', 0, usersStored, 1200);
-      }, 720); // match welcomeOut duration
-    }
-
-    // Show welcome again (if user wants)
-    function showWelcome(){
-      welcome.style.display = 'flex';
-      welcome.classList.remove('welcome-hide');
-      // restart entrance animation
-      welcomeCard.style.animation = 'none';
-      // force reflow to restart animation
-      void welcomeCard.offsetWidth;
-      welcomeCard.style.animation = '';
-      welcomeCard.style.animation = 'welcomeIn .9s cubic-bezier(.2,.9,.2,1) forwards';
-      // auto-hide again after delay
-      scheduleAutoHide();
-    }
-
-    enterBtn.addEventListener('click', revealMain);
-    closeWelcome.addEventListener('click', revealMain);
-
-    // Auto-hide welcome after spectacular animation completes (custom timings)
-    let autoHideTimer = null;
-    function scheduleAutoHide(){
-      if(autoHideTimer) clearTimeout(autoHideTimer);
-      // total show time before hiding (in ms). يمكنك تعديل لتطيل مدة العرض
-      autoHideTimer = setTimeout(()=>{ revealMain(); }, 3000);
-    }
-
-    // Start: show welcome automatically then hide
-    document.addEventListener('DOMContentLoaded', ()=>{
-      // ensure welcome is visible initially; schedule hide
-      scheduleAutoHide();
-
-      // Prepare map toggles and mini boxes
-      setupMapToggles();
-
-      // Setup copy button behavior
-      setupCopyButton();
-    });
-
-    /* =========================
-       Map toggles (animated list)
-       ========================= */
-    function setupMapToggles(){
-      const mapToggle = document.getElementById('mapToggle');
-      const mapList = document.getElementById('mapList');
-      const plus = document.getElementById('plusSign');
-      const showMapBtn = document.getElementById('showMapBtn');
-      const mapPanelList = document.getElementById('mapPanelList');
-
-      if(mapToggle){
-        mapToggle.addEventListener('click', ()=>{
-          const show = mapList.classList.toggle('show');
-          mapToggle.setAttribute('aria-expanded', String(show));
-          mapList.setAttribute('aria-hidden', String(!show));
-          plus.textContent = show ? '−' : '+';
-        });
-      }
-
-      if(showMapBtn){
-        showMapBtn.addEventListener('click', ()=>{
-          const was = mapPanelList.classList.contains('show');
-          if(was){
-            mapPanelList.classList.remove('show');
-            showMapBtn.textContent = '+';
-            showMapBtn.setAttribute('aria-expanded','false');
-            mapPanelList.setAttribute('aria-hidden','true');
-          } else {
-            mapPanelList.classList.add('show');
-            showMapBtn.textContent = '−';
-            showMapBtn.setAttribute('aria-expanded','true');
-            mapPanelList.setAttribute('aria-hidden','false');
-
-            // populate with items (animated)
-            mapPanelList.innerHTML = '';
-            const items = ['Desert','Forest','Urban','Sky','Arena','Cave','ColdZone'];
-            items.forEach((it,i)=>{
-              const div = document.createElement('div');
-              div.className = 'map-item';
-              div.textContent = it;
-              // initial style for animation
-              div.style.opacity = '0';
-              div.style.transform = 'translateY(8px)';
-              div.style.transition = `all .38s cubic-bezier(.2,.9,.2,1) ${i*70}ms`;
-              setTimeout(()=>{ div.style.opacity = '1'; div.style.transform = 'none'; }, 60 + i*70);
-              div.addEventListener('click', ()=>{
-                // visual selection
-                document.querySelectorAll('.map-item').forEach(x=>{ x.style.border = ''; x.style.background = ''; });
-                div.style.background = 'linear-gradient(90deg, rgba(46,247,183,0.06), rgba(107,228,255,0.04))';
-                div.style.border = '1px solid rgba(46,247,183,0.12)';
-              });
-              mapPanelList.appendChild(div);
+    /* Scroll reveal using IntersectionObserver */
+    const revealObserver = new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          // special: stagger children of .stagger
+          if(entry.target.classList.contains('stagger')){
+            Array.from(entry.target.children).forEach((child,i)=>{
+              child.style.transitionDelay = (i*90)+'ms';
+              child.classList.add('visible');
             });
           }
-        });
-      }
-    }
+          // animate minis inside
+          if(entry.target.id === 'minisWrap'){
+            document.querySelectorAll('.mini').forEach((m,i)=>{
+              setTimeout(()=>{ m.style.opacity = '1'; m.style.transform='none'; }, 200 + i*80);
+            });
+          }
+          // animate stats numbers when encryption section appears
+          if(entry.target.id === 'encryption' || entry.target.id === 'compare'){
+            // devs -> 4, execs -> 6000, users -> from storage
+            const usersStored = Number(localStorage.getItem('th_users') || 2345);
+            animateCount(document.getElementById('devsNum'), 0, 4, 900);
+            animateCount(document.getElementById('execNum'), 0, 6000, 1300);
+            animateCount(document.getElementById('usersNum'), 0, usersStored, 1100);
+          }
+          // stop observing after visible to avoid repeat
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.15});
 
-    /* =========================
-       Copy button logic & counters
-       ========================= */
-    function setupCopyButton(){
+    document.querySelectorAll('.reveal, .stagger').forEach(el => revealObserver.observe(el));
+
+    /* Map button (single) */
+    const mapBtn = document.getElementById('mapBtn');
+    const mapList = document.getElementById('mapList');
+    mapBtn && mapBtn.addEventListener('click', ()=>{
+      const show = mapList.classList.toggle('show');
+      mapList.setAttribute('aria-hidden', String(!show));
+      mapBtn.textContent = show ? '−' : '+';
+      if(show){
+        // populate animated items
+        mapList.innerHTML = '';
+        const items = ['Map_Desert','Map_Forest','Map_Urban','Map_Sky','Map_Arena','Map_Cave','Map_Cold'];
+        items.forEach((it,i)=>{
+          const d = document.createElement('div');
+          d.className = 'map-item';
+          d.textContent = it;
+          d.style.opacity = '0';
+          d.style.transform = 'translateY(8px)';
+          d.style.transition = `all .36s cubic-bezier(.2,.9,.2,1) ${i*70}ms`;
+          setTimeout(()=>{ d.style.opacity='1'; d.style.transform='none'; }, 60 + i*70);
+          d.addEventListener('click', ()=> {
+            document.querySelectorAll('.map-item').forEach(x=>{ x.style.border=''; x.style.background=''; });
+            d.style.background = 'linear-gradient(90deg, rgba(139,92,246,0.06), rgba(77,214,214,0.04))';
+            d.style.border = '1px solid rgba(139,92,246,0.12)';
+          });
+          mapList.appendChild(d);
+        });
+      } else {
+        // hide smoothly
+        const children = Array.from(mapList.children);
+        children.reverse().forEach((ch, idx)=>{
+          ch.style.opacity='0';
+          ch.style.transform = 'translateY(8px)';
+        });
+        setTimeout(()=> mapList.innerHTML = '', 300);
+      }
+    });
+
+    /* Copy button & user counter increment */
+    (function setupCopy(){
       const copyBtn = document.getElementById('copyBtn');
       const copyIcon = document.getElementById('copyIcon');
-      const scriptTextEl = document.getElementById('scriptText');
+      const scriptText = document.getElementById('scriptText');
       const usersNumEl = document.getElementById('usersNum');
-
-      if(!copyBtn || !scriptTextEl) return;
-
+      if(!copyBtn || !scriptText) return;
       copyBtn.addEventListener('click', async ()=>{
-        const text = scriptTextEl.innerText || scriptTextEl.textContent || '';
+        const text = scriptText.innerText || scriptText.textContent || '';
         const ok = await safeCopy(text);
         if(ok){
           copyIcon.textContent = '✔';
-          copyBtn.style.transform = 'scale(.985)';
-          setTimeout(()=>copyBtn.style.transform = '', 180);
-
-          // toast confirmation
-          showToast('تم نسخ السكربت');
-
-          // increment stored users counter and animate
+          copyBtn.style.transform = 'scale(.98)';
+          setTimeout(()=> copyBtn.style.transform = '', 160);
+          showToast('تم النسخ');
+          // increment local storage users
           let users = Number(localStorage.getItem('th_users') || 2345);
-          const currentDisplayed = Number((usersNumEl.textContent || '0').replace(/[^0-9]/g,'')) || 0;
-          users = users + 1;
+          const displayed = Number((usersNumEl.textContent || '0').replace(/[^0-9]/g,'')) || 0;
+          users += 1;
           localStorage.setItem('th_users', users);
-          animateValue('usersNum', currentDisplayed, users, 900);
-
-          // restore icon
-          setTimeout(()=>{ copyIcon.textContent = '📋'; }, 900);
+          animateCount(usersNumEl, displayed, users, 900);
+          setTimeout(()=> copyIcon.textContent = '📋', 900);
         } else {
           showToast('فشل النسخ');
         }
       });
-    }
+    })();
 
-    /* =========================
-       initial placeholders / safety
-       ========================= */
-    // placeholders in case not animated yet
-    document.getElementById('devsNum').textContent = '0';
-    document.getElementById('usersNum').textContent = '0';
-    document.getElementById('execNum').textContent = '0';
-
-    // Expose showWelcome to console or future controls (optional)
-    window.showThronicsWelcome = showWelcome;
+    // optional: progressive reveal of header immediately
+    document.addEventListener('DOMContentLoaded', ()=> {
+      // small immediate reveal for header & hero so page feels alive
+      const head = document.querySelector('header');
+      const hero = document.getElementById('hero');
+      setTimeout(()=> { head.classList.add('visible'); hero.classList.add('visible'); }, 150);
+    });
   </script>
 </body>
-  </html>
+</html>
