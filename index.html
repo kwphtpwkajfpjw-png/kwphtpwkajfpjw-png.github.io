@@ -2,7 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Thronics — مكتبة السكربتات</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,9 +35,11 @@
             outline: none; 
         }
         
-        /* ⭐️ (جديد) تحديد حجم الخط الأساسي ليعمل التجاوب بشكل أفضل */
         html {
-            font-size: 16px; /* الحجم الافتراضي */
+            /* ⭐️ هذا هو الحجم الأساسي (للكمبيوتر والتابلت) */
+            font-size: 16px; 
+            /* ⭐️ لجعل التمرير ناعماً */
+            scroll-behavior: smooth;
         }
 
         body {
@@ -57,9 +61,8 @@
             padding: 80px 20px;
             border-bottom: 1px solid var(--dark-surface);
         }
-
         .hero h1 {
-            font-size: 3.2rem;
+            font-size: 3.2rem; /* 51.2px */
             font-weight: 900;
             margin-bottom: 10px;
             background: linear-gradient(90deg, #f0f0f0, var(--primary-color), #f0f0f0);
@@ -70,9 +73,8 @@
             -webkit-text-fill-color: transparent;
             animation: gradient-text 5s linear infinite;
         }
-
         .hero p {
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* 24px */
             color: var(--text-muted);
             font-weight: 700;
             animation: fadeInUp 1s ease-out 0.5s;
@@ -86,7 +88,6 @@
             gap: 20px;
             padding: 50px 0;
         }
-
         .instruction-box {
             background-color: var(--dark-surface);
             padding: 30px;
@@ -104,27 +105,22 @@
         .instruction-box p { color: var(--text-muted); font-size: 1rem; }
 
         /* --- 3. قسم المقارنة (الجدول) --- */
-        
-        /* --- ⭐️ (جديد) غلاف للجدول لجعله متجاوباً --- */
         .table-wrapper {
-            overflow-x: auto; /* يجعل الجدول قابلاً للتمرير أفقياً */
-            -webkit-overflow-scrolling: touch; /* لتحسين التمرير على iOS */
+            overflow-x: auto; /* ⭐️ يجعل الجدول قابلاً للتمرير أفقياً */
+            -webkit-overflow-scrolling: touch; 
             border-radius: 10px;
             border: 1px solid #333;
             margin: 50px 0;
-            background-color: var(--dark-surface); /* نقل لون الخلفية هنا */
+            background-color: var(--dark-surface); 
         }
-        
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            /* ⭐️ (تعديل) جعل الحد الأدنى للعرض ليجبره على التمرير عند الحاجة */
-            min-width: 600px; 
+            min-width: 600px; /* ⭐️ يجبر الجدول على البقاء واسعاً ليتم تمريره */
             margin: 0; 
             border: none; 
             overflow: hidden;
         }
-
         .comparison-table th, .comparison-table td {
             padding: 20px;
             text-align: center;
@@ -302,7 +298,7 @@
         }
         
         /* =====================================================
-        --- ⭐️ (جديد) قسم التجاوب (Media Queries) ⭐️ ---
+        --- ⭐️ (مُحدّث) قسم التجاوب (Media Queries) ⭐️ ---
         =====================================================
         */
         
@@ -324,6 +320,15 @@
 
         /* --- لأجهزة الموبايل (الهواتف) - 480px وأقل --- */
         @media (max-width: 480px) {
+            
+            /* ⭐️⭐️⭐️ الحل السحري لمشكلة "الحجم الكبير" ⭐️⭐️⭐️
+             هنا نقوم بتصغير حجم الخط الأساسي للموقع كله
+             مما يجعل كل الوحدات (rem) تصغر تلقائياً
+            */
+            html {
+                font-size: 14.5px; /* (بدلاً من 16px) */
+            }
+            
             .container {
                 padding: 15px; /* تقليل الحشو الجانبي */
             }
@@ -331,16 +336,16 @@
                 padding: 60px 15px;
             }
             .hero h1 {
-                font-size: 2rem; /* تصغير أكثر */
+                font-size: 2.2rem; /* تصغير أكثر */
             }
             .hero p {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             
             /* تصغير العناوين الفرعية */
             .instruction-box h3 { font-size: 1.3rem; }
             .accordion-header h3 { font-size: 1.2rem; }
-            .code-section h2 { font-size: 1.5rem; }
+            .code-section h2 { font-size: 1.6rem; }
             .stat-box h3 { font-size: 1.2rem; }
 
             .map-list {
@@ -349,18 +354,18 @@
             }
 
             .stat-box .counter {
-                font-size: 2.2rem;
+                font-size: 2.4rem;
             }
             
             /* تعديل مربع السكربت ليناسب الشاشات الضيقة */
             .script-box {
-                padding-left: 50px; /* تقليل المساحة للأيقونة */
+                padding-left: 50px; 
                 padding-right: 15px;
                 padding-top: 15px;
                 padding-bottom: 15px;
             }
             .copy-button {
-                left: 15px; /* تقريب الأيقونة */
+                left: 15px; 
             }
         }
         
