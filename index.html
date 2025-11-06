@@ -2,9 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Thronics — مكتبة السكربتات</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,37 +14,27 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
-        /* --- CSS: الجزء الخاص بالتصميم والأنميشن (مُحدّث) --- */
+        /* --- CSS: الجزء الخاص بالتصميم والأنميشن --- */
         
         :root {
-            --dark-bg: #121019;       
-            --dark-surface: #1e1b29;  
-            --primary-color: #8a4fff; 
-            --primary-glow: rgba(138, 79, 255, 0.4); 
-            --text-color: #f0f0f0;    
-            --text-muted: #aaa;     
+            --dark-bg: #121019;       /* لون الخلفية الداكن جداً */
+            --dark-surface: #1e1b29;  /* لون المربعات */
+            --primary-color: #8a4fff; /* لون بنفسجي مميز */
+            --text-color: #f0f0f0;    /* لون النص الأساسي */
+            --text-muted: #aaa;     /* لون النص الباهت */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            outline: none; 
-        }
-        
-        html {
-            /* ⭐️ هذا هو الحجم الأساسي (للكمبيوتر والتابلت) */
-            font-size: 16px; 
-            /* ⭐️ لجعل التمرير ناعماً */
-            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--dark-bg);
             color: var(--text-color);
-            overflow-x: hidden; 
+            overflow-x: hidden; /* لمنع التمرير الأفقي بسبب التحريكات */
         }
 
         .container {
@@ -61,33 +49,32 @@
             padding: 80px 20px;
             border-bottom: 1px solid var(--dark-surface);
         }
+
         .hero h1 {
-            font-size: 3.2rem; /* 51.2px */
+            font-size: 3rem;
             font-weight: 900;
+            color: var(--primary-color);
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #f0f0f0, var(--primary-color), #f0f0f0);
-            background-size: 200% auto;
-            color: #000;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-text 5s linear infinite;
+            /* أنميشن ظهور بسيط للعنوان */
+            animation: fadeInDown 1s ease-out;
         }
+
         .hero p {
-            font-size: 1.5rem; /* 24px */
+            font-size: 1.5rem;
             color: var(--text-muted);
             font-weight: 700;
             animation: fadeInUp 1s ease-out 0.5s;
-            animation-fill-mode: backwards; 
+            animation-fill-mode: backwards; /* يبدأ الأنميشن من الحالة المخفية */
         }
 
-        /* --- 2. قسم التعليمات --- */
+        /* --- 2. قسم التعليمات (الأربع مربعات) --- */
         .instructions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             padding: 50px 0;
         }
+
         .instruction-box {
             background-color: var(--dark-surface);
             padding: 30px;
@@ -96,44 +83,79 @@
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .instruction-box:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 10px 40px -10px var(--primary-glow);
+            transform: translateY(-10px); /* أنميشن رفع المربع عند التمرير */
+            box-shadow: 0 10px 30px rgba(138, 79, 255, 0.1);
         }
-        .instruction-box i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
-        .instruction-box h3 { font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; }
-        .instruction-box p { color: var(--text-muted); font-size: 1rem; }
+
+        .instruction-box i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .instruction-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .instruction-box p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
 
         /* --- 3. قسم المقارنة (الجدول) --- */
-        .table-wrapper {
-            overflow-x: auto; /* ⭐️ يجعل الجدول قابلاً للتمرير أفقياً */
-            -webkit-overflow-scrolling: touch; 
-            border-radius: 10px;
-            border: 1px solid #333;
-            margin: 50px 0;
-            background-color: var(--dark-surface); 
-        }
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px; /* ⭐️ يجبر الجدول على البقاء واسعاً ليتم تمريره */
-            margin: 0; 
-            border: none; 
+            margin: 50px 0;
+            background-color: var(--dark-surface);
+            border-radius: 10px;
             overflow: hidden;
+            border: 1px solid #333;
         }
+
         .comparison-table th, .comparison-table td {
             padding: 20px;
             text-align: center;
             border-bottom: 1px solid #2a273a;
-            transition: background-color 0.3s ease;
         }
-        .comparison-table tbody tr:hover td { background-color: #2a273a; }
-        .comparison-table th { background-color: #2a273a; font-size: 1.3rem; font-weight: 700; }
-        .comparison-table td:first-child { text-align: right; font-weight: 700; color: var(--text-muted); }
-        .comparison-table .check { color: #4CAF50; font-size: 1.5rem; font-weight: 900; }
-        .comparison-table .cross { color: #F44336; font-size: 1.5rem; font-weight: 900; }
-        .comparison-table .ultra-low { color: #4CAF50; font-weight: 700; }
-        .comparison-table .pay-wall { color: #F44336; text-decoration: line-through; }
+
+        .comparison-table th {
+            background-color: #2a273a;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .comparison-table td:first-child {
+            text-align: right;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .comparison-table .check {
+            color: #4CAF50; /* أخضر */
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .comparison-table .cross {
+            color: #F44336; /* أحمر */
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+        
+        .comparison-table .ultra-low {
+            color: #4CAF50;
+            font-weight: 700;
+        }
+        
+        .comparison-table .pay-wall {
+            color: #F44336;
+            text-decoration: line-through;
+        }
 
         /* --- 4. قسم المابات (Accordion) --- */
         .accordion {
@@ -143,8 +165,15 @@
             border: 1px solid #333;
             overflow: hidden;
         }
-        .accordion-item { border-bottom: 1px solid #2a273a; }
-        .accordion-item:last-child { border-bottom: none; }
+
+        .accordion-item {
+            border-bottom: 1px solid #2a273a;
+        }
+        
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
         .accordion-header {
             display: flex;
             justify-content: space-between;
@@ -154,29 +183,54 @@
             background-color: var(--dark-surface);
             transition: background-color 0.3s ease;
         }
-        .accordion-header:hover { background-color: #2a273a; }
-        .accordion-header h3 { font-size: 1.5rem; font-weight: 700; }
+        
+        .accordion-header:hover {
+            background-color: #2a273a;
+        }
+
+        .accordion-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
         .accordion-header .icon {
             font-size: 1.5rem;
             color: var(--primary-color);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* أنميشن فخم */
         }
+
         .accordion-content {
-            max-height: 0; 
+            max-height: 0; /* هذا هو السر لإخفاء المحتوى */
             overflow: hidden;
             background: var(--dark-bg);
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* أنميشن فتح القائمة */
         }
+
         .map-list {
             list-style: none;
             padding: 30px;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
             gap: 15px;
         }
-        .map-list li { padding: 10px; background: #1a1723; border-radius: 5px; color: var(--text-muted); transition: color 0.3s, background 0.3s; }
-        .map-list li:hover { background: var(--primary-color); color: white; }
-        .accordion-item.active .accordion-header .icon { transform: rotate(135deg); }
+        
+        .map-list li {
+            padding: 10px;
+            background: #1a1723;
+            border-radius: 5px;
+            color: var(--text-muted);
+            transition: color 0.3s, background 0.3s;
+        }
+        
+        .map-list li:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* كلاس يضاف بـ JS لتغيير الأيقونة والأنميشن */
+        .accordion-item.active .accordion-header .icon {
+            transform: rotate(135deg); /* تحويل + إلى x */
+        }
 
         /* --- 5. قسم السكربت (Code Block) --- */
         .code-section h2 {
@@ -186,65 +240,90 @@
             margin-bottom: 20px;
             color: var(--primary-color);
         }
-        .code-label {
-            display: flex;
-            align-items: center;
-            gap: 8px; 
-            color: var(--text-muted);
-            font-family: 'Courier New', Courier, monospace;
-            margin-bottom: 10px;
-            padding-right: 5px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-        .code-label i { font-size: 1.2rem; }
-        .script-box {
-            background-color: #0d0b12; 
+        
+        .code-block {
+            background-color: #0d0b12;
             border: 1px solid #333;
             border-radius: 10px;
             padding: 20px;
-            padding-left: 60px; 
-            display: flex;
-            align-items: center;
             font-family: 'Courier New', Courier, monospace;
-            position: relative; 
-        }
-        .script-box pre {
-            color: #e0e0e0;
-            white-space: pre-wrap; 
-            word-wrap: break-word;
-            flex-grow: 1; 
-        }
-        .copy-button {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: color 0.3s, transform 0.3s;
-            position: absolute;
-            left: 20px; 
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .copy-button:hover {
-            color: var(--primary-color);
-            transform: translateY(-50%) scale(1.2); 
-        }
-        .copy-button .icon-copy { display: inline-block; }
-        .copy-button .icon-check { display: none; }
-        .copy-button.copied { color: #4CAF50; }
-        .copy-button.copied .icon-copy { display: none; }
-        .copy-button.copied .icon-check {
-            display: inline-block;
-            animation: bounceIn 0.5s ease; 
+            position: relative;
+            overflow: hidden;
         }
         
+        .code-block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #2a273a;
+        }
+        
+        .code-block-header span {
+            color: #6c757d;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+        }
+
+        /* --- CSS الجديد لزر النسخ (ليطابق الصورة) --- */
+        .copy-button {
+            background-color: transparent; /* بدون خلفية */
+            color: var(--text-muted);     /* لون رمادي للأيقونة */
+            border: none;
+            padding: 8px; /* هامش بسيط حول الأيقونة */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 1.3rem; /* تكبير الأيقونة قليلاً */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* أزلنا العرض والطول الثابت */
+        }
+        
+        .copy-button:hover {
+            color: var(--text-color); /* تفتيح اللون عند التمرير */
+        }
+        
+        .copy-button .icon-copy {
+            display: inline-block;
+        }
+        
+        .copy-button .icon-check {
+            display: none; /* مخفي افتراضياً */
+            font-size: 1.3rem; /* نفس حجم أيقونة النسخ */
+            color: #4CAF50; /* لون أخضر لعلامة الصح */
+        }
+
+        /* هذا الكلاس يضاف عند النسخ */
+        .copy-button.copied {
+            /* لا نحتاج تغيير الخلفية، فقط تبديل الأيقونة */
+        }
+
+        .copy-button.copied .icon-copy {
+            display: none;
+        }
+
+        .copy-button.copied .icon-check {
+            display: inline-block;
+            animation: bounceIn 0.5s ease; /* أنميشن علامة الصح */
+        }
+        /* --- نهاية CSS الجديد --- */
+
+
+        .code-block pre {
+            color: #e0e0e0;
+            white-space: pre-wrap; /* لضمان التفاف السطر */
+            word-wrap: break-word;
+        }
+        
+        /* إشعار "تم النسخ" */
         #copy-notification {
             position: fixed;
             bottom: 30px;
             left: 50%;
-            transform: translate(-50%, 100px); 
+            transform: translate(-50%, 100px); /* يبدأ من خارج الشاشة */
             background-color: #4CAF50;
             color: white;
             padding: 15px 30px;
@@ -252,10 +331,15 @@
             font-family: 'Cairo', sans-serif;
             font-weight: 700;
             z-index: 1000;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 0;
         }
-        #copy-notification.show { transform: translate(-50%, 0); opacity: 1; }
+        
+        #copy-notification.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
 
         /* --- 6. قسم الإحصائيات (Stats) --- */
         .stats {
@@ -265,110 +349,42 @@
             padding: 50px 0;
             text-align: center;
         }
+
         .stat-box {
             background-color: var(--dark-surface);
             padding: 40px 20px;
             border-radius: 10px;
             border: 1px solid #333;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .stat-box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px -8px var(--primary-glow);
+
+        .stat-box h3 {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
         }
-        .stat-box h3 { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 10px; }
-        .stat-box .counter { font-size: 3.5rem; font-weight: 900; color: var(--primary-color); }
+
+        .stat-box .counter {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
 
         /* --- تحريكات إضافية --- */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         @keyframes bounceIn {
             0% { transform: scale(0.5); opacity: 0; }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); opacity: 1; }
         }
-        @keyframes gradient-text {
-            to { background-position: 200% center; }
-        }
-        
-        /* =====================================================
-        --- ⭐️ (مُحدّث) قسم التجاوب (Media Queries) ⭐️ ---
-        =====================================================
-        */
-        
-        /* --- لأجهزة التابلت (الأجهزة اللوحية) - 768px وأقل --- */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem; /* تصغير العنوان الرئيسي */
-            }
-            .hero p {
-                font-size: 1.2rem;
-            }
-            .map-list {
-                grid-template-columns: 1fr 1fr; /* عمودان بدلاً من ثلاثة */
-            }
-            .stat-box .counter {
-                font-size: 2.8rem; /* تصغير أرقام العدادات */
-            }
-        }
-
-        /* --- لأجهزة الموبايل (الهواتف) - 480px وأقل --- */
-        @media (max-width: 480px) {
-            
-            /* ⭐️⭐️⭐️ الحل السحري لمشكلة "الحجم الكبير" ⭐️⭐️⭐️
-             هنا نقوم بتصغير حجم الخط الأساسي للموقع كله
-             مما يجعل كل الوحدات (rem) تصغر تلقائياً
-            */
-            html {
-                font-size: 14.5px; /* (بدلاً من 16px) */
-            }
-            
-            .container {
-                padding: 15px; /* تقليل الحشو الجانبي */
-            }
-            .hero {
-                padding: 60px 15px;
-            }
-            .hero h1 {
-                font-size: 2.2rem; /* تصغير أكثر */
-            }
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            /* تصغير العناوين الفرعية */
-            .instruction-box h3 { font-size: 1.3rem; }
-            .accordion-header h3 { font-size: 1.2rem; }
-            .code-section h2 { font-size: 1.6rem; }
-            .stat-box h3 { font-size: 1.2rem; }
-
-            .map-list {
-                grid-template-columns: 1fr; /* عمود واحد فقط */
-                padding: 20px;
-            }
-
-            .stat-box .counter {
-                font-size: 2.4rem;
-            }
-            
-            /* تعديل مربع السكربت ليناسب الشاشات الضيقة */
-            .script-box {
-                padding-left: 50px; 
-                padding-right: 15px;
-                padding-top: 15px;
-                padding-bottom: 15px;
-            }
-            .copy-button {
-                left: 15px; 
-            }
-        }
-        
     </style>
 </head>
 <body>
@@ -403,7 +419,7 @@
             </div>
         </section>
 
-        <section class="table-wrapper" data-aos="fade-up">
+        <section class="comparison" data-aos="fade-up">
             <table class="comparison-table">
                 <thead>
                     <tr>
@@ -479,16 +495,16 @@
 
         <section class="code-section" data-aos="fade-up">
             <h2>احصل على السكربت</h2>
-            <div class="code-label">
-                <i class="fa-brands fa-lua"></i> 
-                <span>lua</span>
-            </div>
-            <div class="script-box">
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span>lua</span>
+                    
+                    <button class="copy-button" id="copy-btn">
+                        <span class="icon-copy"><i class="fa-solid fa-copy"></i></span>
+                        <span class="icon-check"><i class="fa-solid fa-check"></i></span>
+                    </button>
+                </div>
                 <pre><code id="script-content">loadstring(game:HttpGet(('https://raw.githubusercontent.com/thronics/main/script.lua'),true))()</code></pre>
-                <button class="copy-button" id="copy-btn" title="نسخ السكربت">
-                    <i class="fa-solid fa-copy icon-copy"></i>
-                    <i class="fa-solid fa-check icon-check"></i>
-                </button>
             </div>
         </section>
         
@@ -506,20 +522,20 @@
                 <div class="counter" id="user-counter" data-target="12450">0</div>
             </div>
             <div class="stat-box" data-aos="zoom-in-up" data-aos-delay="200">
-        <h3>عدد المنفذين</h3>
-                <div class="counter" data-target="6000">0</div> 
-            </div>
+                <h3>عدد المنفذين</h3>
+                <div class="counter" data-target="6000">0</div> </div>
         </section>
 
     </div> <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     
     <script>
         // --- JS: الجزء الخاص بالتفاعلات ---
+        // (لم يتم تغيير أي شيء هنا، كل شيء يعمل كما هو)
 
         // 1. تفعيل أنميشن الظهور عند التمرير (AOS)
         AOS.init({
-            duration: 800, 
-            once: true,    
+            duration: 800, // مدة الأنميشن
+            once: true,    // يعمل الأنميشن مرة واحدة فقط
         });
 
         // 2. تفعيل القائمة المنسدلة (Accordion)
@@ -528,11 +544,14 @@
         const accordionContent = document.querySelector('.accordion-content');
 
         accordionHeader.addEventListener('click', () => {
+            // تبديل الكلاس "active" لتغيير الأيقونة
             accordionItem.classList.toggle('active');
             
             if (accordionItem.classList.contains('active')) {
+                // فتح القائمة مع أنميشن "فخم"
                 accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
             } else {
+                // إغلاق القائمة
                 accordionContent.style.maxHeight = '0px';
             }
         });
@@ -543,6 +562,7 @@
         const copyNotification = document.getElementById('copy-notification');
 
         copyButton.addEventListener('click', () => {
+            // عملية النسخ إلى الحافظة
             navigator.clipboard.writeText(scriptContent).then(() => {
                 
                 // 1. تغيير شكل الزر (إظهار علامة الصح)
@@ -567,22 +587,25 @@
 
         // 4. تفعيل عداد الأرقام المتصاعد (الأنميشن الذي طلبته)
         
+        // هذه الدالة لتشغيل العداد لرقم معين
         function animateCounter(element, target) {
             let current = 0;
-            const duration = 1500; 
-            const stepTime = 20; 
+            const duration = 1500; // مدة الأنميشن (مللي ثانية)
+            const stepTime = 20; // سرعة التحديث
             const steps = duration / stepTime;
             const increment = target / steps;
             
-            element.innerText = '0'; 
+            element.innerText = '0'; // يبدأ من الصفر
 
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= target) {
                     clearInterval(timer);
+                    // تنسيق الرقم 6000 ليصبح 6K
                     if (target === 6000) {
                         element.innerText = '6K+';
                     } else if (target >= 1000) {
+                        // إضافة فواصل للآلاف
                         element.innerText = Math.ceil(target).toLocaleString('ar');
                     } else {
                          element.innerText = Math.ceil(target);
@@ -593,31 +616,34 @@
             }, stepTime);
         }
 
+        // هذه الدالة لزيادة عداد المستخدمين عند النقر
         const userCounterElement = document.getElementById('user-counter');
         function updateUserCounter() {
             let currentTarget = parseInt(userCounterElement.dataset.target);
             let newTarget = currentTarget + 1;
-            userCounterElement.dataset.target = newTarget; 
-            animateCounter(userCounterElement, newTarget); 
+            userCounterElement.dataset.target = newTarget; // تحديث الرقم المستهدف
+            animateCounter(userCounterElement, newTarget); // إعادة تشغيل الأنميشن للرقم الجديد
         }
 
+        // تشغيل العدادات فقط عندما يراها المستخدم (عند التمرير للأسفل)
         const statsSection = document.getElementById('stats-section');
         const counters = document.querySelectorAll('.counter');
-        let hasCountersAnimated = false; 
+        let hasCountersAnimated = false; // لمنع تشغيل العداد كل مرة
 
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && !hasCountersAnimated) {
                 counters.forEach(counter => {
-                    const target = +counter.dataset.target; 
+                    const target = +counter.dataset.target; // + لتحويل النص لرقم
                     animateCounter(counter, target);
                 });
-                hasCountersAnimated = true; 
-                observer.disconnect(); 
+                hasCountersAnimated = true; // تم التشغيل
+                observer.disconnect(); // إيقاف المراقبة
             }
         }, {
-            threshold: 0.5 
+            threshold: 0.5 // يبدأ عندما يظهر 50% من القسم
         });
 
+        // بدء مراقبة قسم الإحصائيات
         observer.observe(statsSection);
 
     </script>
