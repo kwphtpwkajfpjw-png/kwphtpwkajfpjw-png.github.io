@@ -20,7 +20,6 @@
             --dark-bg: #121019;       
             --dark-surface: #1e1b29;  
             --primary-color: #8a4fff; 
-            /* لون جديد للوهج الفخم */
             --primary-glow: rgba(138, 79, 255, 0.4); 
             --text-color: #f0f0f0;    
             --text-muted: #aaa;     
@@ -30,10 +29,13 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            
-            /* --- ⭐️ طلبك: إزالة التحديد الأزرق عند اللمس --- */
             -webkit-tap-highlight-color: transparent;
-            outline: none; /* لإزالة أي تحديد عند التركيز */
+            outline: none; 
+        }
+        
+        /* ⭐️ (جديد) تحديد حجم الخط الأساسي ليعمل التجاوب بشكل أفضل */
+        html {
+            font-size: 16px; /* الحجم الافتراضي */
         }
 
         body {
@@ -49,7 +51,7 @@
             padding: 20px;
         }
 
-        /* --- 1. قسم الترحيب (مع أنميشن أفخم) --- */
+        /* --- 1. قسم الترحيب --- */
         .hero {
             text-align: center;
             padding: 80px 20px;
@@ -57,11 +59,9 @@
         }
 
         .hero h1 {
-            font-size: 3.2rem; /* حجم أكبر */
+            font-size: 3.2rem;
             font-weight: 900;
             margin-bottom: 10px;
-            
-            /* --- ⭐️ أنميشن نص متدرج فخم --- */
             background: linear-gradient(90deg, #f0f0f0, var(--primary-color), #f0f0f0);
             background-size: 200% auto;
             color: #000;
@@ -79,7 +79,7 @@
             animation-fill-mode: backwards; 
         }
 
-        /* --- 2. قسم التعليمات (مع أنميشن أفخم) --- */
+        /* --- 2. قسم التعليمات --- */
         .instructions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -95,30 +95,34 @@
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .instruction-box:hover {
-            /* --- ⭐️ أنميشن رفع وتكبير مع ظل متوهج --- */
             transform: translateY(-10px) scale(1.03);
             box-shadow: 0 10px 40px -10px var(--primary-glow);
         }
-
-        .instruction-box i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
+        .instruction-box i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
         .instruction-box h3 { font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; }
         .instruction-box p { color: var(--text-muted); font-size: 1rem; }
 
         /* --- 3. قسم المقارنة (الجدول) --- */
+        
+        /* --- ⭐️ (جديد) غلاف للجدول لجعله متجاوباً --- */
+        .table-wrapper {
+            overflow-x: auto; /* يجعل الجدول قابلاً للتمرير أفقياً */
+            -webkit-overflow-scrolling: touch; /* لتحسين التمرير على iOS */
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin: 50px 0;
+            background-color: var(--dark-surface); /* نقل لون الخلفية هنا */
+        }
+        
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 50px 0;
-            background-color: var(--dark-surface);
-            border-radius: 10px;
+            /* ⭐️ (تعديل) جعل الحد الأدنى للعرض ليجبره على التمرير عند الحاجة */
+            min-width: 600px; 
+            margin: 0; 
+            border: none; 
             overflow: hidden;
-            border: 1px solid #333;
         }
 
         .comparison-table th, .comparison-table td {
@@ -127,12 +131,7 @@
             border-bottom: 1px solid #2a273a;
             transition: background-color 0.3s ease;
         }
-        
-        /* --- ⭐️ أنميشن تظليل الصف عند التمرير --- */
-        .comparison-table tbody tr:hover td {
-            background-color: #2a273a;
-        }
-
+        .comparison-table tbody tr:hover td { background-color: #2a273a; }
         .comparison-table th { background-color: #2a273a; font-size: 1.3rem; font-weight: 700; }
         .comparison-table td:first-child { text-align: right; font-weight: 700; color: var(--text-muted); }
         .comparison-table .check { color: #4CAF50; font-size: 1.5rem; font-weight: 900; }
@@ -164,7 +163,7 @@
         .accordion-header .icon {
             font-size: 1.5rem;
             color: var(--primary-color);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* أنميشن فخم */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .accordion-content {
             max-height: 0; 
@@ -183,9 +182,7 @@
         .map-list li:hover { background: var(--primary-color); color: white; }
         .accordion-item.active .accordion-header .icon { transform: rotate(135deg); }
 
-
-        /* --- 5. قسم السكربت (Code Block) - (مُحدّث بالكامل) --- */
-        
+        /* --- 5. قسم السكربت (Code Block) --- */
         .code-section h2 {
             text-align: center;
             font-size: 2rem;
@@ -193,12 +190,10 @@
             margin-bottom: 20px;
             color: var(--primary-color);
         }
-        
-        /* --- ⭐️ (جديد) تصميم عنوان "lua" مثل الصورة --- */
         .code-label {
             display: flex;
             align-items: center;
-            gap: 8px; /* مسافة بين الأيقونة والنص */
+            gap: 8px; 
             color: var(--text-muted);
             font-family: 'Courier New', Courier, monospace;
             margin-bottom: 10px;
@@ -206,32 +201,24 @@
             font-size: 0.9rem;
             text-transform: uppercase;
         }
-        
-        .code-label i {
-            font-size: 1.2rem;
-        }
-
-        /* --- ⭐️ (جديد) تصميم مربع السكربت مثل الصورة --- */
+        .code-label i { font-size: 1.2rem; }
         .script-box {
-            background-color: #0d0b12; /* لون داكن جداً */
+            background-color: #0d0b12; 
             border: 1px solid #333;
             border-radius: 10px;
             padding: 20px;
-            padding-left: 60px; /* مساحة لزر النسخ على اليسار */
+            padding-left: 60px; 
             display: flex;
             align-items: center;
             font-family: 'Courier New', Courier, monospace;
-            position: relative; /* مهم لتثبيت زر النسخ */
+            position: relative; 
         }
-        
         .script-box pre {
             color: #e0e0e0;
             white-space: pre-wrap; 
             word-wrap: break-word;
             flex-grow: 1; 
         }
-
-        /* --- ⭐️ (مُحدّث) تصميم زر النسخ كأيقونة فقط --- */
         .copy-button {
             background: transparent;
             border: none;
@@ -239,33 +226,24 @@
             font-size: 1.3rem;
             cursor: pointer;
             transition: color 0.3s, transform 0.3s;
-            
-            /* تثبيت الأيقونة على اليسار (لأننا في RTL) */
             position: absolute;
             left: 20px; 
             top: 50%;
             transform: translateY(-50%);
         }
-        
         .copy-button:hover {
             color: var(--primary-color);
-            transform: translateY(-50%) scale(1.2); /* أنميشن تكبير عند التمرير */
+            transform: translateY(-50%) scale(1.2); 
         }
-        
         .copy-button .icon-copy { display: inline-block; }
         .copy-button .icon-check { display: none; }
-
-        /* هذا الكلاس يضاف عند النسخ */
-        .copy-button.copied {
-            color: #4CAF50; /* لون أخضر */
-        }
+        .copy-button.copied { color: #4CAF50; }
         .copy-button.copied .icon-copy { display: none; }
         .copy-button.copied .icon-check {
             display: inline-block;
-            animation: bounceIn 0.5s ease; /* أنميشن علامة الصح */
+            animation: bounceIn 0.5s ease; 
         }
         
-        /* إشعار "تم النسخ" */
         #copy-notification {
             position: fixed;
             bottom: 30px;
@@ -281,11 +259,7 @@
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
             opacity: 0;
         }
-        
-        #copy-notification.show {
-            transform: translate(-50%, 0);
-            opacity: 1;
-        }
+        #copy-notification.show { transform: translate(-50%, 0); opacity: 1; }
 
         /* --- 6. قسم الإحصائيات (Stats) --- */
         .stats {
@@ -295,7 +269,6 @@
             padding: 50px 0;
             text-align: center;
         }
-
         .stat-box {
             background-color: var(--dark-surface);
             padding: 40px 20px;
@@ -303,13 +276,10 @@
             border: 1px solid #333;
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        
-        /* --- ⭐️ أنميشن فخم للإحصائيات عند التمرير --- */
         .stat-box:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 30px -8px var(--primary-glow);
         }
-
         .stat-box h3 { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 10px; }
         .stat-box .counter { font-size: 3.5rem; font-weight: 900; color: var(--primary-color); }
 
@@ -327,12 +297,73 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); opacity: 1; }
         }
-        /* --- ⭐️ أنميشن النص المتدرج --- */
         @keyframes gradient-text {
-            to {
-                background-position: 200% center;
+            to { background-position: 200% center; }
+        }
+        
+        /* =====================================================
+        --- ⭐️ (جديد) قسم التجاوب (Media Queries) ⭐️ ---
+        =====================================================
+        */
+        
+        /* --- لأجهزة التابلت (الأجهزة اللوحية) - 768px وأقل --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem; /* تصغير العنوان الرئيسي */
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .map-list {
+                grid-template-columns: 1fr 1fr; /* عمودان بدلاً من ثلاثة */
+            }
+            .stat-box .counter {
+                font-size: 2.8rem; /* تصغير أرقام العدادات */
             }
         }
+
+        /* --- لأجهزة الموبايل (الهواتف) - 480px وأقل --- */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px; /* تقليل الحشو الجانبي */
+            }
+            .hero {
+                padding: 60px 15px;
+            }
+            .hero h1 {
+                font-size: 2rem; /* تصغير أكثر */
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            /* تصغير العناوين الفرعية */
+            .instruction-box h3 { font-size: 1.3rem; }
+            .accordion-header h3 { font-size: 1.2rem; }
+            .code-section h2 { font-size: 1.5rem; }
+            .stat-box h3 { font-size: 1.2rem; }
+
+            .map-list {
+                grid-template-columns: 1fr; /* عمود واحد فقط */
+                padding: 20px;
+            }
+
+            .stat-box .counter {
+                font-size: 2.2rem;
+            }
+            
+            /* تعديل مربع السكربت ليناسب الشاشات الضيقة */
+            .script-box {
+                padding-left: 50px; /* تقليل المساحة للأيقونة */
+                padding-right: 15px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+            .copy-button {
+                left: 15px; /* تقريب الأيقونة */
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -367,7 +398,7 @@
             </div>
         </section>
 
-        <section class="comparison" data-aos="fade-up">
+        <section class="table-wrapper" data-aos="fade-up">
             <table class="comparison-table">
                 <thead>
                     <tr>
@@ -443,13 +474,12 @@
 
         <section class="code-section" data-aos="fade-up">
             <h2>احصل على السكربت</h2>
-            
             <div class="code-label">
-                <i class="fa-brands fa-lua"></i> <span>lua</span>
+                <i class="fa-brands fa-lua"></i> 
+                <span>lua</span>
             </div>
             <div class="script-box">
                 <pre><code id="script-content">loadstring(game:HttpGet(('https://raw.githubusercontent.com/thronics/main/script.lua'),true))()</code></pre>
-                
                 <button class="copy-button" id="copy-btn" title="نسخ السكربت">
                     <i class="fa-solid fa-copy icon-copy"></i>
                     <i class="fa-solid fa-check icon-check"></i>
@@ -471,7 +501,7 @@
                 <div class="counter" id="user-counter" data-target="12450">0</div>
             </div>
             <div class="stat-box" data-aos="zoom-in-up" data-aos-delay="200">
-                <h3>عدد المنفذين</h3>
+        <h3>عدد المنفذين</h3>
                 <div class="counter" data-target="6000">0</div> 
             </div>
         </section>
