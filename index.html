@@ -1,0 +1,401 @@
+<!doctype html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thronics — مكتبة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0c0f14;
+      --card:#0f1720;
+      --muted:#9aa3b7;
+      --accent:#2ef7b7;
+      --accent-2:#6be4ff;
+      --danger:#ff6b6b;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Poppins, Montserrat, sans-serif;background:linear-gradient(180deg,#050608 0%, #0b0f14 100%);color:#eaf0ff}
+    body{direction:rtl}
+    .container{max-width:1200px;margin:30px auto;padding:20px}/* Header */
+header{display:flex;align-items:center;gap:16px}
+.logo{font-weight:800;font-size:22px;letter-spacing:0.6px;color:var(--accent);text-shadow:0 6px 20px rgba(46,247,183,0.08),0 0 8px rgba(107,228,255,0.06)}
+.subtitle{color:var(--muted);font-size:14px}
+
+/* Welcome overlay */
+.welcome{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center, rgba(0,0,0,0.6), rgba(0,0,0,0.85));z-index:60}
+.welcome-card{width:92%;max-width:900px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.012));border-radius:18px;padding:30px;border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px);box-shadow:0 10px 40px rgba(2,6,23,0.7);transform:translateY(20px);animation:welcomeIn .9s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes welcomeIn{from{opacity:0;transform:translateY(40px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.welcome h1{margin:0;font-size:34px;color:var(--accent);font-weight:800;letter-spacing:0.5px}
+.welcome p{color:var(--accent-2);margin:12px 0 18px}
+.btn-enter{padding:12px 20px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#001;cursor:pointer;font-weight:700;box-shadow:0 6px 30px rgba(107,228,255,.08);transform:translateZ(0)}
+
+/* reveal helpers */
+.hidden {opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease}
+.show {opacity:1;transform:translateY(0)}
+
+/* instruction cards */
+.instructions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:28px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);min-height:120px;position:relative;overflow:hidden}
+.card h3{margin:0 0 8px;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.card:before{content:'';position:absolute;inset:auto -40% -40% auto;width:160%;height:160%;background:radial-gradient(circle at 20% 20%, rgba(107,228,255,0.06), transparent 10%), radial-gradient(circle at 80% 80%, rgba(46,247,183,0.04), transparent 10%);transform:rotate(12deg)}
+
+/* comparison table (force LTR so columns remain left-to-right as designed) */
+.compare{margin-top:30px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+.compare .compare-grid{direction:ltr;display:grid;grid-template-columns:240px 1fr 1fr;gap:0}
+.compare-header{display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));font-weight:700}
+.row{display:flex;align-items:center;padding:18px;border-top:1px solid rgba(255,255,255,0.02)}
+.criteria{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));}
+.check{display:inline-flex;align-items:center;justify-content:center;width:44px;height:32px;border-radius:8px;background:rgba(46,247,183,0.08);color:var(--accent);font-weight:700}
+.bad{background:rgba(255,107,107,0.06);color:var(--danger)}
+.detail-strong{color:var(--accent-2);font-weight:700}
+
+/* mini-grid */
+.mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:14px}
+.mini{height:70px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);box-shadow:0 6px 20px rgba(2,6,23,0.6);transform:translateY(12px);opacity:0}
+.mini.show{animation:miniIn .6s forwards}
+@keyframes miniIn{to{transform:none;opacity:1}}
+
+/* map selector */
+.maps{margin-top:24px;display:flex;gap:16px;align-items:start}
+.maps .panel{flex:1;background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.map-toggle{display:flex;align-items:center;gap:10px;cursor:pointer}
+.plus{width:46px;height:46px;border-radius:10px;background:linear-gradient(90deg, rgba(46,247,183,0.06), rgba(107,228,255,0.06));display:flex;align-items:center;justify-content:center;font-weight:800}
+.map-list{margin-top:12px;max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.9,.2,1), opacity .3s;opacity:0}
+.map-list.show{max-height:320px;opacity:1}
+.map-item{padding:10px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);cursor:pointer}
+
+/* encryption UI */
+.enc{margin-top:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)}
+.code-area{background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(255,255,255,0.02));padding:14px;border-radius:12px;position:relative;min-height:80px;font-family:monospace;color:#dffcf0;direction:ltr;text-align:left}
+.copy-btn{position:absolute;top:12px;left:12px;background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:10px;cursor:pointer}
+.copy-icon{display:inline-block;vertical-align:middle}
+
+/* toast */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#002;border-radius:12px;padding:10px 16px;font-weight:700;box-shadow:0 10px 40px rgba(46,247,183,0.08);opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.show{opacity:1}
+
+/* big stat cards */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.stat{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));text-align:center}
+.stat h4{margin:0;font-size:13px;color:var(--muted)}
+.stat .num{font-size:28px;font-weight:800;color:var(--accent);margin-top:8px}
+
+/* responsiveness */
+@media (max-width:900px){.compare .compare-grid{grid-template-columns:180px 1fr}.compare .compare-grid > :nth-child(3){display:none}.mini-grid{grid-template-columns:repeat(4,1fr)}.maps{flex-direction:column}}
+
+  </style>
+</head>
+<body>
+  <!-- Welcome -->
+  <div class="welcome" id="welcome">
+    <div class="welcome-card">
+      <h1>Thronics — مكتبة</h1>
+      <p>البرنامج النصي الشامل لأكثر من 125 لعبة — مرحباً بك! (انقر دخول للبدء)</p>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button class="btn-enter" id="enterBtn">دخول الموقع</button>
+        <button class="btn-enter" id="demoBtn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)">عرض توضيحي</button>
+      </div>
+    </div>
+  </div>  <div class="container hidden" id="main">
+    <header>
+      <div class="logo">Thronics</div>
+      <div style="flex:1"></div>
+      <div class="subtitle">مكتبة / واجهة متقدمة فخمة مع تأثيرات و أنميشين</div>
+    </header><!-- 4 instruction cards -->
+<section class="instructions">
+  <div class="card" id="card1"><h3>تعليمات التثبيت</h3><p>اتبع الخطوات: تحميل → استخراج → تركيب.</p></div>
+  <div class="card" id="card2"><h3>نظام التشفير</h3><p>واجهة تشفير تحمي السكربتات وتمنع التعديل غير المرغوب.</p></div>
+  <div class="card" id="card3"><h3>نصائح الأداء</h3><p>ضبط الإعدادات لتحسين FPS دون فقدان الميزات.</p></div>
+  <div class="card" id="card4"><h3>الدعم</h3><p>ديسكورد نشط 24/7 — تواصل معنا عند الحاجة.</p></div>
+</section>
+
+<!-- comparison with forced LTR inside to keep column order correct -->
+<section class="compare">
+  <div class="compare-grid">
+    <div class="compare-header">Criteria</div>
+    <div class="compare-header">Dark X</div>
+    <div class="compare-header">Other Scripts</div>
+
+    <div class="row criteria">Performance / FPS impact</div>
+    <div class="row"><div class="check">✔</div></div>
+    <div class="row"><div class="check bad">✖</div></div>
+
+    <div class="row criteria">Supporting many games</div>
+    <div class="row"><div class="check">✔</div></div>
+    <div class="row"><div class="check bad">✖</div></div>
+
+    <div class="row criteria">Updates within 24 h</div>
+    <div class="row"><div class="check">✔</div></div>
+    <div class="row"><div class="check bad">✖</div></div>
+
+    <div class="row criteria">Detection rate</div>
+    <div class="row"><div class="check">✔<div style="font-size:12px;margin-right:8px;color:var(--accent-2)">(ultra-low)</div></div></div>
+    <div class="row"><div class="check bad">✖<div style="font-size:12px;margin-right:8px;color:var(--danger)">(high)</div></div></div>
+
+    <div class="row criteria">Completely Free</div>
+    <div class="row"><div class="check">✔</div></div>
+    <div class="row"><div class="check bad">✖<div style="font-size:12px;margin-right:8px;color:var(--danger)">(pay-wall)</div></div></div>
+
+    <div class="row criteria">Active Discord 24/7</div>
+    <div class="row"><div class="check">✔</div></div>
+    <div class="row"><div class="check bad">✖</div></div>
+
+  </div>
+
+  <!-- three mini-columns each with 7 boxes -->
+  <div style="display:flex;gap:12px;padding:14px;direction:ltr">
+    <div style="flex:1;background:transparent;padding:8px;border-radius:10px">
+      <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Criteria</div>
+      <div class="mini-grid" id="minis1">
+        <div class="mini">1</div>
+        <div class="mini">2</div>
+        <div class="mini">3</div>
+        <div class="mini">4</div>
+        <div class="mini">5</div>
+        <div class="mini">6</div>
+        <div class="mini">7</div>
+      </div>
+    </div>
+    <div style="flex:1;padding:8px;border-radius:10px">
+      <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Thronics</div>
+      <div class="mini-grid" id="minis2">
+        <div class="mini">صورة</div>
+        <div class="mini">صورة</div>
+        <div class="mini">صورة</div>
+        <div class="mini">صورة</div>
+        <div class="mini">صورة</div>
+        <div class="mini">صورة</div>
+        <div class="mini">صورة</div>
+      </div>
+    </div>
+    <div style="flex:1;padding:8px;border-radius:10px">
+      <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Other Scripts</div>
+      <div class="mini-grid" id="minis3">
+        <div class="mini">X</div>
+        <div class="mini">X</div>
+        <div class="mini">X</div>
+        <div class="mini">X</div>
+        <div class="mini">X</div>
+        <div class="mini">X</div>
+        <div class="mini">X</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Maps area -->
+<section class="maps">
+  <div class="panel">
+    <div class="map-toggle" id="mapToggle">
+      <div class="plus" id="plusSign">+</div>
+      <div style="flex:1">
+        <div style="font-weight:700">المابات المتاحة</div>
+        <div style="color:var(--muted);font-size:13px">اضغط + لعرض المابات</div>
+      </div>
+    </div>
+    <div class="map-list" id="mapList">
+      <!-- افتراضي -->
+      <div class="map-item">Map_Desert</div>
+      <div class="map-item">Map_Forest</div>
+      <div class="map-item">Map_Urban</div>
+      <div class="map-item">Map_Sky</div>
+      <div class="map-item">Map_Arena</div>
+    </div>
+  </div>
+
+  <div class="panel" style="flex:1.2">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:800">قائمة المابات للاختيار</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div style="color:var(--muted);font-size:13px">اختر ماب لتطبيق السكربت</div>
+        <button class="plus" id="showMapBtn">+</button>
+      </div>
+    </div>
+    <div style="margin-top:12px;color:var(--muted)">اضغط + لإظهار/إخفاء القائمة مع أنميشين فخم.</div>
+    <div id="mapPanelList" class="map-list" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<!-- Encryption UI and stats -->
+<section class="enc" aria-label="واجهة التشفير">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="font-weight:800">واجهة التشفير — Thronics Script</div>
+    <div style="color:var(--muted);font-size:13px">نسخة محمية — انقر نسخ لنسخ السكربت</div>
+  </div>
+
+  <div class="code-area" id="codeArea">
+    <button class="copy-btn" id="copyBtn" title="نسخ السكربت">
+      <span class="copy-icon" id="copyIcon">📋</span>
+    </button>
+    <div id="scriptText">-- Thronics | Encrypted Script
+
+-- مثال عرضي فقط local key = "THR0N1CS-ENCRYPTED-EXAMPLE" print("تحميل...")</div> </div>
+
+<div class="stats" style="margin-top:16px">
+    <div class="stat"><h4>المطورون</h4><div class="num" id="devsNum">0</div></div>
+    <div class="stat"><h4>عدد المستخدمين</h4><div class="num" id="usersNum">0</div></div>
+    <div class="stat"><h4>المنفذون</h4><div class="num" id="execNum">0</div></div>
+  </div>
+
+</section>
+
+  </div>  <div class="toast" id="toast">تم النسخ ✔</div>  <script>
+    // =====================
+    // Utilities
+    // =====================
+    function easeOutCubic(t){return 1 - Math.pow(1 - t, 3)}
+    function formatNumberSmart(n){
+      if(n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'') + 'm';
+      if(n >= 1000) return Math.round(n/1000) + 'k';
+      return String(n);
+    }
+
+    function animateValue(id, start, end, duration=1000){
+      const el = document.getElementById(id);
+      let startTime = null;
+      const step = (timestamp)=>{
+        if(!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime)/duration, 1);
+        const eased = easeOutCubic(progress);
+        const value = Math.floor(start + (end - start) * eased);
+        el.textContent = formatNumberSmart(value);
+        if(progress < 1){
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = formatNumberSmart(end);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    // =====================
+    // Page behavior
+    // =====================
+    const welcome = document.getElementById('welcome');
+    const main = document.getElementById('main');
+    const enter = document.getElementById('enterBtn');
+    const demo = document.getElementById('demoBtn');
+
+    function revealMain(){
+      welcome.style.display='none';
+      main.classList.remove('hidden');
+      setTimeout(()=>main.classList.add('show'),40);
+
+      // reveal minis with stagger
+      document.querySelectorAll('.mini').forEach((el,i)=>{
+        setTimeout(()=>el.classList.add('show'), 100 + i*80);
+      });
+
+      // animate stats: devs -> 4, execs -> 6000, users from storage (or default 2345)
+      animateValue('devsNum', 0, 4, 900);
+      animateValue('execNum', 0, 6000, 1400);
+      const usersStored = Number(localStorage.getItem('th_users') || 2345);
+      animateValue('usersNum', 0, usersStored, 1200);
+    }
+
+    enter.addEventListener('click', revealMain);
+    demo.addEventListener('click', ()=>{ localStorage.setItem('th_users','4567'); revealMain(); });
+
+    // Map toggle
+    const mapToggle = document.getElementById('mapToggle');
+    const mapList = document.getElementById('mapList');
+    const plus = document.getElementById('plusSign');
+    const showMapBtn = document.getElementById('showMapBtn');
+    const mapPanelList = document.getElementById('mapPanelList');
+
+    mapToggle.addEventListener('click', ()=>{
+      mapList.classList.toggle('show');
+      plus.textContent = mapList.classList.contains('show')? '−' : '+';
+    });
+
+    showMapBtn.addEventListener('click', ()=>{
+      if(mapPanelList.classList.contains('show')){
+        mapPanelList.classList.remove('show');
+        showMapBtn.textContent = '+';
+      } else {
+        mapPanelList.classList.add('show');
+        showMapBtn.textContent = '−';
+        // populate
+        mapPanelList.innerHTML = '';
+        const items = ['Desert','Forest','Urban','Sky','Arena','Cave','ColdZone'];
+        items.forEach((it,i)=>{
+          const div = document.createElement('div');
+          div.className='map-item';
+          div.textContent = it;
+          div.style.opacity = '0';
+          div.style.transform = 'translateY(8px)';
+          div.style.transition = 'all .36s cubic-bezier(.2,.9,.2,1) ' + (i*70) + 'ms';
+          setTimeout(()=>{div.style.opacity='1';div.style.transform='none'}, 50 + i*70);
+          mapPanelList.appendChild(div);
+          div.addEventListener('click', ()=>{
+            // visual selection
+            document.querySelectorAll('.map-item').forEach(x=>x.style.border='');
+            div.style.background = 'linear-gradient(90deg, rgba(46,247,183,0.06), rgba(107,228,255,0.04))';
+            div.style.border = '1px solid rgba(46,247,183,0.12)';
+          });
+        });
+      }
+    });
+
+    // Copy button: copies text, shows toast, increments users count in storage & animates number
+    const copyBtn = document.getElementById('copyBtn');
+    const copyIcon = document.getElementById('copyIcon');
+    const toast = document.getElementById('toast');
+    const usersNumEl = document.getElementById('usersNum');
+
+    async function safeCopy(text){
+      // try Clipboard API, fallback to textarea method
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true;}catch(e){/* fallback below */}
+      }
+      try{
+        const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+        ta.select(); ta.setSelectionRange(0, ta.value.length);
+        document.execCommand('copy'); ta.remove(); return true;
+      }catch(e){return false}
+    }
+
+    function showToast(msg='تم'){
+      toast.textContent = msg; toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),1600);
+    }
+
+    copyBtn.addEventListener('click', async ()=>{
+      const text = document.getElementById('scriptText').innerText;
+      const ok = await safeCopy(text);
+      if(ok){
+        copyIcon.textContent = '✔';
+        copyBtn.style.transform = 'scale(.98)';
+        setTimeout(()=>copyBtn.style.transform='';,200);
+        showToast('تم نسخ السكربت');
+
+        // increment stored users and animate
+        let users = Number(localStorage.getItem('th_users') || 2345);
+        const currentDisplayed = Number((document.getElementById('usersNum').textContent || '0').replace(/[^0-9]/g,'')) || 0;
+        users = users + 1;
+        localStorage.setItem('th_users', users);
+        animateValue('usersNum', currentDisplayed, users, 800);
+
+        setTimeout(()=>{copyIcon.textContent='📋'},900);
+      } else {
+        showToast('فشل النسخ');
+      }
+    });
+
+    // initial placeholders
+    document.getElementById('devsNum').textContent = '0';
+    document.getElementById('usersNum').textContent = '0';
+    document.getElementById('execNum').textContent = '0';
+
+    // reveal mini cards after DOM ready
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // pre-warm some values if desired
+    });
+
+  </script></body>
+</html>
