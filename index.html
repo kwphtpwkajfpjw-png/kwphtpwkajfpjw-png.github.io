@@ -266,7 +266,6 @@
             font-weight: 700;
         }
 
-        /* --- CSS الجديد لزر النسخ (ليطابق الصورة) --- */
         .copy-button {
             background-color: transparent; /* بدون خلفية */
             color: var(--text-muted);     /* لون رمادي للأيقونة */
@@ -279,7 +278,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* أزلنا العرض والطول الثابت */
         }
         
         .copy-button:hover {
@@ -296,7 +294,6 @@
             color: #4CAF50; /* لون أخضر لعلامة الصح */
         }
 
-        /* هذا الكلاس يضاف عند النسخ */
         .copy-button.copied {
             /* لا نحتاج تغيير الخلفية، فقط تبديل الأيقونة */
         }
@@ -309,8 +306,6 @@
             display: inline-block;
             animation: bounceIn 0.5s ease; /* أنميشن علامة الصح */
         }
-        /* --- نهاية CSS الجديد --- */
-
 
         .code-block pre {
             color: #e0e0e0;
@@ -369,6 +364,84 @@
             color: var(--primary-color);
         }
 
+        /* --- 7. قسم التواصل (الجديد الفخم) --- */
+        .cta-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* عمودين أو عمود واحد على الشاشات الصغيرة */
+            gap: 20px;
+            padding: 40px 0 80px 0; /* هامش سفلي إضافي */
+        }
+
+        .cta-box {
+            background-color: var(--dark-surface);
+            padding: 40px 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden; /* لإخفاء الأنميشن الزائد */
+        }
+
+        .cta-box:hover {
+            transform: translateY(-12px); /* يرتفع أكثر بقليل */
+            box-shadow: 0 15px 40px rgba(138, 79, 255, 0.25); /* ظل بنفسجي فخم وواضح */
+        }
+
+        .cta-box .cta-icon {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            /* أنميشن "نبض" للأيقونة لجذب الانتباه */
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .cta-box h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-color); /* لون أوضح */
+        }
+
+        .cta-box p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* أنميشن فخم */
+            border: 2px solid var(--primary-color);
+            z-index: 2; /* فوق الخلفية المتحركة */
+            position: relative;
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            transform: scale(1.05); /* يكبر قليلاً */
+            box-shadow: 0 5px 20px rgba(138, 79, 255, 0.3);
+        }
+        
+        .cta-button i {
+            margin-left: 8px; /* مسافة بين النص والسهم */
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover i {
+            transform: translateX(-5px); /* حركة بسيطة للسهم عند التمرير */
+        }
+
+
         /* --- تحريكات إضافية --- */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
@@ -384,6 +457,22 @@
             0% { transform: scale(0.5); opacity: 0; }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* تعريف أنميشن النبض (الذي طلبته للأيقونات) */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px rgba(138, 79, 255, 0.3));
+            }
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 15px rgba(138, 79, 255, 0.7));
+            }
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px rgba(138, 79, 255, 0.3));
+            }
         }
     </style>
 </head>
@@ -517,20 +606,49 @@
                 <h3>عدد المطورين</h3>
                 <div class="counter" data-target="4">0</div>
             </div>
+            
             <div class="stat-box" data-aos="zoom-in-up" data-aos-delay="100">
-                <h3>عدد المستخدمين</h3>
-                <div class="counter" id="user-counter" data-target="12450">0</div>
+                <h3>عدد المابات</h3>
+                <div class="counter" id="map-counter" data-target="125">0</div>
             </div>
+            
             <div class="stat-box" data-aos="zoom-in-up" data-aos-delay="200">
                 <h3>عدد المنفذين</h3>
-                <div class="counter" data-target="6000">0</div> </div>
+                <div class="counter" data-target="6000">0</div>
+            </div>
         </section>
+
+        <section class="cta-section">
+            <div class="cta-box" data-aos="zoom-in-up" data-aos-delay="300">
+                <div class="cta-icon">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                <h3>قناة التليجرام</h3>
+                <p>انضم لآخر الأخبار، التحديثات، والهدايا الحصرية</p>
+                <a href="#" class="cta-button" target="_blank">
+                    انضم الآن
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+            </div>
+            
+            <div class="cta-box" data-aos="zoom-in-up" data-aos-delay="400">
+                <div class="cta-icon">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+                <h3>تواصل مع المطور</h3>
+                <p>هل لديك اقتراح، مشكلة، أو تريد الإبلاغ عن خطأ؟</p>
+                <a href="#" class="cta-button" target="_blank">
+                    تواصل معنا
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+            </div>
+        </section>
+
 
     </div> <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     
     <script>
         // --- JS: الجزء الخاص بالتفاعلات ---
-        // (لم يتم تغيير أي شيء هنا، كل شيء يعمل كما هو)
 
         // 1. تفعيل أنميشن الظهور عند التمرير (AOS)
         AOS.init({
@@ -571,8 +689,9 @@
                 // 2. إظهار الإشعار "تم النسخ"
                 copyNotification.classList.add('show');
                 
-                // 3. زيادة عداد المستخدمين (كما طلبت)
-                updateUserCounter();
+                // 3. *** التغيير هنا ***
+                // تم حذف سطر (updateUserCounter();)
+                // بناءً على طلبك، العداد 125 لن يزيد الآن.
 
                 // 4. إعادة الزر والإشعار لوضعه الطبيعي بعد ثانيتين
                 setTimeout(() => {
@@ -611,19 +730,15 @@
                          element.innerText = Math.ceil(target);
                     }
                 } else {
-                     element.innerText = Math.ceil(current).toLocaleString('ar');
+                    // عرض الأرقام أثناء صعودها مع الفواصل
+                    element.innerText = Math.ceil(current).toLocaleString('ar');
                 }
             }, stepTime);
         }
 
-        // هذه الدالة لزيادة عداد المستخدمين عند النقر
-        const userCounterElement = document.getElementById('user-counter');
-        function updateUserCounter() {
-            let currentTarget = parseInt(userCounterElement.dataset.target);
-            let newTarget = currentTarget + 1;
-            userCounterElement.dataset.target = newTarget; // تحديث الرقم المستهدف
-            animateCounter(userCounterElement, newTarget); // إعادة تشغيل الأنميشن للرقم الجديد
-        }
+        // *** التغيير هنا ***
+        // تم حذف دالة (updateUserCounter) بالكامل
+        // لم نعد بحاجة إليها لأن العداد ثابت.
 
         // تشغيل العدادات فقط عندما يراها المستخدم (عند التمرير للأسفل)
         const statsSection = document.getElementById('stats-section');
